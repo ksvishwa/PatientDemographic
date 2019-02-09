@@ -1,0 +1,226 @@
+﻿<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+<script>
+    //Validate alphanumeric characters for the input texbox
+    $.fn.regexMask = function (mask) {
+        $(this).keypress(function (event) {
+            if (!event.charCode) return true;
+            var part1 = this.value.substring(0, this.selectionStart);
+            var part2 = this.value.substring(this.selectionEnd, this.value.length);
+            if (!mask.test(part1 + String.fromCharCode(event.charCode) + part2))
+                return false;
+        });
+    };
+    $(document).ready(function () {
+        //Configure Web API URL
+        var apiURL = "http://localhost:58545/api/patients";
+        var page = 1;
+        var recordsPerPage = 2;
+        var totalPage = 0;
+
+        var firstNameValidationMsg = 'First Name should be minimum 3 characters length';
+        var lastNameValidationMsg = 'Last Name should be minimum 2 characters length';
+        var genderValidationMsg = 'Please select the Gender';
+        var saveSuccess = 'Patient details saved successfully';
+        var saveError = 'Error occured while processing the request';
+
+        var now = new Date(),
+            minDate = now.toISOString().substring(0, 10);
+        $('#txtDOB').prop('max', minDate);
+
+        //Validate alphanumeric characters for the input texbox
+        var mask = new RegExp('^[A-Za-z0-9 ]*$')
+        //$("input").regexMask(mask);
+
+        //Get Patient data
+        function showPage(page) {
+            var apiURlData = apiURL + "?currentPage=" + page + "&recordsPerPage=" + recordsPerPage;
+            $.getJSON(apiURlData,
+                function (json) {
+                    var tr;
+                    $("#tableData").empty();
+                    totalPage = Math.ceil(json.TotalRecords / recordsPerPage);
+                    for (var i = 0; i < json.PatientDetails.length; i++) {
+                        tr = $('<tr/>');
+                        tr.append("<td>" + json.PatientDetails[i].ForeName + "</td>");
+                        tr.append("<td>" + json.PatientDetails[i].SurName + "</td>");
+                        tr.append("<td>" + json.PatientDetails[i].Gender + "</td>");
+                        if (json.PatientDetails[i].DateofBirth != null) {
+                            var date = new Date(json.PatientDetails[i].DateofBirth);
+                            tr.append("<td>" + date.getDay() + "-" + date.getMonth() + "-" + date.getFullYear() + "</td>");
+                        }
+                        else {
+                            tr.append("<td></td>");
+                        }
+                        if (json.PatientDetails[i].TelephoneNumbers != null) {
+                            tr.append("<td>" + json.PatientDetails[i].TelephoneNumbers.HomeNumber + "</td>");
+                            tr.append("<td>" + json.PatientDetails[i].TelephoneNumbers.WorkNumber + "</td>");
+                            tr.append("<td>" + json.PatientDetails[i].TelephoneNumbers.MobileNumber + "</td>");
+                        }
+                        else {
+                            tr.append("<td></td><td></td><td></td>");
+                        }
+
+                        $('#tableData').append(tr);
+                    }
+                    if (totalPage != 0) {
+                        $('#currentPage').html("Showing " + page + "/" + totalPage);
+                    }
+                    else {
+                        $('#currentPage').html('');
+                    }
+                });
+        }
+
+        //Paging - Previouse Page
+        function prevPage() {
+            if (page == 1) {
+                page = 1;
+            } else {
+                page--;
+            }
+            showPage(page);
+        }
+        //Paging - Next Page
+        function nextPage() {
+            if (page == totalPage) {
+                page = totalPage;
+            } else {
+                page++;
+            }
+            showPage(page);
+        }
+        showPage(page);
+        $('#prev').click(prevPage);
+        $('#next').click(nextPage);
+
+        //Save Patient details
+        $("#postform").submit(function (e) {
+            e.preventDefault();
+            var foreName = $("#txtFirstName").val().trim();
+            var surName = $("#txtLastName").val().trim();
+            var genderval = $("#ddlGender option:selected").val();
+            var gendertext = $("#ddlGender option:selected").text();
+            var dob = $("#txtDOB").val().trim();
+            var homeNumber = $("#txtHomeNumber").val().trim();
+            var workNumber = $("#txtWorkNumber").val().trim();
+            var mobileNumber = $("#txtMobileNumber").val().trim();
+
+            //Input details validation
+            if (foreName.length == 0 || foreName.length > 50 || foreName.length < 3) {
+                $.alert({
+                    title: 'Alert!',
+                    content: firstNameValidationMsg,
+                });
+                return false;
+            }
+            if (surName.length == 0 || surName.length > 50 || surName.length < 2) {
+                $.alert({
+                    title: 'Alert!',
+                    content: lastNameValidationMsg,
+                });
+                return false;
+            }
+            if (genderval.length == 0) {
+                $.alert({
+                    title: 'Alert!',
+                    content: genderValidationMsg,
+                });
+                return false;
+            }
+
+            var val = {
+                ForeName: foreName,
+                SurName: surName,
+                Gender: gendertext,
+                DateofBirth: dob,
+                "TelephoneNumbers": {
+                    HomeNumber: homeNumber,
+                    WorkNumber: workNumber,
+                    MobileNumber: mobileNumber
+                }
+            };
+
+            $.ajax({
+                url: apiURL,
+                type: 'POST',
+                dataType: 'html',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(val),
+                success: function (msg) {
+                    document.getElementById("postform").reset();
+                    $.alert({
+                        title: 'Info',
+                        content: saveSuccess,
+                    });
+                    showPage(page);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $.alert({
+                        title: 'Alert!',
+                        content: saveError,
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+
+<form name="postform" id="postform">
+    <table id="Input">
+        <tr>
+            <td>
+                <input type="text" id="txtFirstName" class="form-control" maxlength="50" placeholder="First Name" />
+            </td>
+            <td>
+                <input type="text" id="txtLastName" class="form-control" maxlength="50" placeholder="Last Name" />
+            </td>
+            <td>
+                <select id="ddlGender" class="required form-control" style="min-width:150px">
+                    <option value="" selected>Select Gender</option>
+                    <option value="1">Male</option>
+                    <option value="2">Female</option>
+                </select>
+            </td>
+            <td>
+                <input placeholder="Select DOB" id="txtDOB" data-date-format="DD MMMM YYYY" class="textbox-n form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')">
+            </td>
+            <td>
+                <input placeholder="Home Number" type="number" id="txtHomeNumber" min="0" class="form-control" maxlength="15" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
+            </td>
+            <td>
+                <input placeholder="Work Number" type="number" id="txtWorkNumber" min="0" class="form-control" maxlength="15" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
+            </td>
+            <td>
+                <input placeholder="Mobile Number" type="number" id="txtMobileNumber" min="0" class="form-control" maxlength="15" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
+            </td>
+            <td>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </td>
+        </tr>
+        <tr><td style="height:30px"></td></tr>
+    </table>
+
+    <div class="form-horizontal">
+        <table id="PatientInfo" class="table table-bordered  table-hover">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Gender</th>
+                    <th>Date of Birth</th>
+                    <th>Home Number</th>
+                    <th>Work Number</th>
+                    <th>Mobile Number</th>
+                </tr>
+            </thead>
+            <tbody id="tableData"></tbody>
+        </table>
+        <div id="listingTable">
+            <button id="prev" type="button" class="btn btn-info">Prev page</button>  <label id="currentPage"></label>
+            <button id="next" type="button" class="btn btn-info">Next page</button>
+        </div>
+    </div>
+</form>
