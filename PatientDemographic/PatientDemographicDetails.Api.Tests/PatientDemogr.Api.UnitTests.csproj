@@ -118,13 +118,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PatientDemographicDetails.Api\PatientDemographicDetails.Api.csproj">
+    <ProjectReference Include="..\PatientDemographicDetails.Api\PatientDemogr.Api.csproj">
       <Project>{DD9A6DB8-12E2-498F-AAE6-47348933F63A}</Project>
-      <Name>PatientDemographicDetails.Api</Name>
+      <Name>PatientDemogr.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PatientDemographicDetails.Repo\PatientDemographicDetails.Repo.csproj">
+    <ProjectReference Include="..\PatientDemographicDetails.Repo\PatientDemogr.Repo.csproj">
       <Project>{c543ba63-1a21-45b4-b2cb-6df53fd33c28}</Project>
-      <Name>PatientDemographicDetails.Repo</Name>
+      <Name>PatientDemogr.Repo</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

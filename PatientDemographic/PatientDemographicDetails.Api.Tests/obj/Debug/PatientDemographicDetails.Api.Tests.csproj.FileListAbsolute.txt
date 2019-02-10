@@ -1,2 +1,0 @@
-C:\Vishwa\PatientDemographic\Code\PatientDemographicDetails.Api.Tests\obj\Debug\PatientDemographicDetails.Api.Tests.csprojAssemblyReference.cache
-C:\Vishwa\PatientDemographic\Code\PatientDemographicDetails.Api.Tests\obj\Debug\PatientDemographicDetails.Api.Tests.csproj.CoreCompileInputs.cache

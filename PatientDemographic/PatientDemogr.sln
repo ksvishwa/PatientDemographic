@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDemographicDetails.Web", "PatientDemographicDetails.Web\PatientDemographicDetails.Web.csproj", "{3C39506D-A303-4D93-9F81-380552D92033}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDemogr.Web", "PatientDemographicDetails.Web\PatientDemogr.Web.csproj", "{3C39506D-A303-4D93-9F81-380552D92033}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDemographicDetails.Api", "PatientDemographicDetails.Api\PatientDemographicDetails.Api.csproj", "{DD9A6DB8-12E2-498F-AAE6-47348933F63A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDemogr.Api", "PatientDemographicDetails.Api\PatientDemogr.Api.csproj", "{DD9A6DB8-12E2-498F-AAE6-47348933F63A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDemographicDetails.Api.UnitTests", "PatientDemographicDetails.Api.Tests\PatientDemographicDetails.Api.UnitTests.csproj", "{AACD129C-AD77-4020-8AF8-4E6F954C2BFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDemogr.Api.UnitTests", "PatientDemographicDetails.Api.Tests\PatientDemogr.Api.UnitTests.csproj", "{AACD129C-AD77-4020-8AF8-4E6F954C2BFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDemographicDetails.Repo", "PatientDemographicDetails.Repo\PatientDemographicDetails.Repo.csproj", "{C543BA63-1A21-45B4-B2CB-6DF53FD33C28}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDemogr.Repo", "PatientDemographicDetails.Repo\PatientDemogr.Repo.csproj", "{C543BA63-1A21-45B4-B2CB-6DF53FD33C28}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

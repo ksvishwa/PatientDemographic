@@ -35,9 +35,12 @@
 
         //Get Patient data
         function showPage(page) {
+            console.log("show page start");
             var apiURlData = apiURL + "?currentPage=" + page + "&recordsPerPage=" + recordsPerPage;
             $.getJSON(apiURlData,
                 function (json) {
+                    console.log("show page result");
+                    console.log(json);
                     var tr;
                     $("#tableData").empty();
                     totalPage = Math.ceil(json.TotalRecords / recordsPerPage);
@@ -150,10 +153,7 @@
                 data: JSON.stringify(val),
                 success: function (msg) {
                     document.getElementById("postform").reset();
-                    $.alert({
-                        title: 'Info',
-                        content: saveSuccess,
-                    });
+                    alert("Data saved successfully");
                     showPage(page);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {

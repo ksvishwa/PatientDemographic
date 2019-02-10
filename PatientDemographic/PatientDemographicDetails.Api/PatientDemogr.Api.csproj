@@ -304,9 +304,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PatientDemographicDetails.Repo\PatientDemographicDetails.Repo.csproj">
+    <ProjectReference Include="..\PatientDemographicDetails.Repo\PatientDemogr.Repo.csproj">
       <Project>{c543ba63-1a21-45b4-b2cb-6df53fd33c28}</Project>
-      <Name>PatientDemographicDetails.Repo</Name>
+      <Name>PatientDemogr.Repo</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
